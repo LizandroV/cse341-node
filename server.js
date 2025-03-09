@@ -1,11 +1,21 @@
-//espress web server    
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 3000;
+import 'dotenv/config';
+import express from 'express';
+import routesMascotas from './routes/mascotas.js';
+import bodyParser from 'body-parser';
 
-app.get('/', function (req, res) {
-    res.send('Hello Lizandro!');
-    });
+const app = express();
 
-app.listen(process.env.port || port);
-console.log(`Server is running on port ${port}`);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/mascotas', routesMascotas);
+
+try {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    })
+    }
+catch (error) {
+    console.error('Error occurred:', error);
+};
